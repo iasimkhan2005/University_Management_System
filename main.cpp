@@ -13,7 +13,7 @@ class Student
 private:
     string studentId;
     string name, email;
-    vector<Courses*> courseEnrolled;
+    vector<Courses *> courseEnrolled;
 
 public:
     Student() {
@@ -31,9 +31,15 @@ public:
     string getName() const { return name; }
     string getEmail() const { return email; }
 
-    void enrollCourse(Courses* course);
-    void dropCourse(Courses* course);
-    
+  
+    string getID() const { return studentId; }
+    string getName() const { return name; }
+    string getEmail() const { return email; }
+
+    void enrollCourse(Courses *course);
+    void dropCourse(Courses *course);
+    string getName() const;
+
     void viewCourse();
 };
 class Teacher
@@ -41,7 +47,10 @@ class Teacher
 private:
     string Teacher_Id;
     string Teacher_name, Teacher_email;
-    vector<Courses*> Teacher_course;
+
+
+    vector<Courses *> Teacher_course;
+
 
 public:
     Teacher(string id, string n, string e) : Teacher_Id(id), Teacher_name(n), Teacher_email(e) {}
@@ -49,11 +58,13 @@ public:
     string getID() const { return Teacher_Id; }
     string getName() const { return Teacher_name; }
     string getEmail() const { return Teacher_email; }
-    void assignCourse(Courses* course)
+
+    void assignCourse(Courses *course)
+
     {
         Teacher_course.push_back(course);
     }
-    void removeCourse(Courses* course)
+    void removeCourse(Courses *course)
     {
         auto it = find(Teacher_course.begin(), Teacher_course.end(), course);
         if (it != Teacher_course.end())
@@ -61,7 +72,10 @@ public:
             Teacher_course.erase(it);
         }
     }
-    vector<Courses*> viewCourse() const
+
+ 
+    vector<Courses *> viewCourse() const
+
     {
         return Teacher_course;
     }
@@ -71,29 +85,35 @@ class Courses
 private:
     string courseCode;
     string courseName;
-    Student* student;
-    Teacher* teacher;
+
+
+    Student *student;
+    Teacher *teacher;
+
 
 public:
     Courses();
     string getCode() const { return courseCode; }
     string getName() const { return courseName; }
-    Teacher* getTeacher() const { return teacher; }
+
+
+    Teacher *getTeacher() const { return teacher; }
+
     string getCourseName() const;
-    void addStudent(Student* student);
-    void removeStudent(Student* student);
+    void addStudent(Student *student);
+    void removeStudent(Student *student);
     void viewStudent();
 };
 
 // Implementations for Student methods
 
 
-void Student::enrollCourse(Courses* course)
+void Student::enrollCourse(Courses *course)
 {
     courseEnrolled.push_back(course);
 }
 
-void Student::dropCourse(Courses* course)
+void Student::dropCourse(Courses *course)
 {
     courseEnrolled.erase(find(courseEnrolled.begin(), courseEnrolled.end(), course));
 }
@@ -122,12 +142,12 @@ string Courses::getCourseName() const
     return courseName;
 }
 
-void Courses::addStudent(Student* student)
+void Courses::addStudent(Student *student)
 {
     this->student = student;
 }
 
-void Courses::removeStudent(Student* student)
+void Courses::removeStudent(Student *student)
 {
     if (this->student == student)
     {
@@ -151,28 +171,35 @@ void Courses::viewStudent()
         cout << this->student->getName() << endl;
     }
 }
-void saveDataToFile(vector<const Student*>& students, const vector<Teacher*>& teachers, const vector<Courses*>& courses)
+
+
+void saveDataToFile(vector<const Student *> &students, const vector<Teacher *> &teachers, const vector<Courses *> &courses)
+
 {
     ofstream studentFile("students.txt");
     ofstream teacherFile("teachers.txt");
     ofstream courseFile("courses.txt");
 
-    for (const auto& student : students)
+
+    for (const auto &student : students)
     {
         studentFile << student->getID() << " " << student->getName() << " " << student->getEmail() << endl;
     }
     studentFile.close();
 
-    for (const auto& teacher : teachers)
+
+    for (const auto &teacher : teachers)
     {
         teacherFile << teacher->getID() << " " << teacher->getName() << " " << teacher->getEmail() << endl;
     }
     teacherFile.close();
 
-    for (const auto& course : courses)
+
+    for (const auto &course : courses)
     {
         courseFile << course->getCode() << " " << course->getName() << " " << course->getTeacher()->getID() << " "
-            << endl;
+                   << endl;
+
     }
     courseFile.close();
 }
