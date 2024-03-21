@@ -11,12 +11,16 @@ class Courses;
 class Student
 {
 private:
-    int studentId;
+    string studentId;
     string name, email;
     vector<Courses *> courseEnrolled;
 
 public:
     Student();
+
+    string getID() const { return studentId; }
+    string getName() const { return name; }
+    string getEmail() const { return email; }
 
     void enrollCourse(Courses *course);
     void dropCourse(Courses *course);
@@ -156,6 +160,12 @@ void saveDataToFile(vector<const Student *> &students, const vector<Teacher *> &
     ofstream studentFile("students.txt");
     ofstream teacherFile("teachers.txt");
     ofstream courseFile("courses.txt");
+
+    for (const auto &student : students)
+    {
+        studentFile << student->getID() << " " << student->getName() << " " << student->getEmail() << endl;
+    }
+    studentFile.close();
 
     for (const auto &teacher : teachers)
     {
