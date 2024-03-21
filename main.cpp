@@ -22,7 +22,34 @@ public:
     string getName() const;
     void viewCourse();
 };
+class Teacher
+{
+private:
+    string Teacher_Id;
+    string Teacher_name, Teacher_email;
+    vector<Courses* > Teacher_course;
 
+public:
+    Teacher(string id, string n, string e) : Teacher_Id(id), Teacher_name(n), Teacher_email(e) {}
+    
+   
+ string getID() const { return Teacher_Id; }
+    string getName() const { return Teacher_name; }
+    string getEmail() const { return Teacher_email; }
+    void assignCourse(Courses* course) {
+		Teacher_course.push_back(course);
+    }
+    void removeCourse(Courses* course)
+    {
+        auto it = find(Teacher_course.begin(), Teacher_course.end(), course);
+        if (it != Teacher_course.end()) {
+            Teacher_course.erase(it);
+        }
+    }
+    vector<Courses*> viewCourse() const{
+		return Teacher_course;
+	}
+};
 class Courses
 {
 private:
@@ -32,6 +59,9 @@ private:
 
 public:
     Courses();
+ string getCode() const { return courseCode; }
+ string getName() const { return courseName; }
+ Teacher* getTeacher() const { return teacher; }
     string getCourseName() const;
     void addStudent(Student* student);
     void removeStudent(Student* student);
@@ -116,6 +146,24 @@ void Courses::viewStudent()
     {
         cout << this->student->getName() << endl;
     }
+}
+void saveDataToFile(vector<const Student*>& students,const vector<Teacher*>& teachers,const vector<Courses*>& courses)
+{
+	ofstream studentFile("students.txt");
+    ofstream teacherFile("teachers.txt");
+    ofstream courseFile("courses.txt");
+
+    for (const auto & teacher : teachers) {
+        teacherFile << teacher->getID() << " " << teacher->getName() << " " << teacher->getEmail() << endl;
+    }
+    teacherFile.close();
+
+    for (const auto& course : courses) {
+        courseFile << course->getCode() << " " << course->getName() << " " << course->getTeacher()->getID() << " "
+           << endl;
+    }
+    courseFile.close();
+
 }
 
 int main()
